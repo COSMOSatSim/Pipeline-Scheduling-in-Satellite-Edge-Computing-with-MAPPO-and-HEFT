@@ -1,0 +1,49 @@
+// =========================================================================
+// secors.json5
+// Iperparametri SPECIFICI di SECORS dal paper (Table I + Architettura RNN).
+// La ricetta canonica di MAPPO (trick, loss, optimizer) è in config/training/algorithm/mappo.json5.
+// Le impostazioni operative della run (resume, intervalli) in training.json5.
+// Scenario (device/generators/offline/pipeline) in config/scenarios/<id>.json5.
+// =========================================================================
+{
+    //////////////////////////////////////
+    // PARAMETER SETTING OF SEC-MPH - Iperparametri (Tab. I del paper)
+    //////////////////////////////////////
+    "PARAMETER SETTING OF SEC-MPH": {
+        // --- Seed ---
+        "seed":   23081999,         // seed per la riproducibilità (init reti, sampling azioni)
+        // --- Learning Rates ---
+        "lr1": 0.0001,              // lr1 - learning rate Actor
+        "lr2": 0.0001,              // lr2 - learning rate Critic
+        // --- Discount Factors ---
+        "γ": 0.99,                  // γ   - fattore di sconto
+        "ϱ": 0.95,                  // ϱ   - λ per GAE
+        // --- Coefficients ---
+        "λ1": 1.0,                  // peso completion time
+        "λ2": 0.01,                 // peso energia (0.01 nel paper)
+        "β":  0.5,                  // bilanciamento C_T vs C_E
+        "ω":  0.3,                  // bilanciamento reward privato vs globale
+        // --- Clipping Parameter ---
+        "ε": 0.2,                   // ε   - clipping PPO
+        // --- Maximum episode EP ---
+        "EP":     10000,            // EP - episodi totali
+        // --- Batch Size ---
+        "B":  8,                    // B   - dimensione batch
+        // --- Chunk Length ---
+        "L":  10,                   // L   - lunghezza chunk RNN (BPTT)
+        // --- Gradient Update Times ---
+        "K":   10                   // K   - aggiornamenti PPO per batch
+    },
+
+    //////////////////////////////////////
+    // Maschera delle azioni
+    //////////////////////////////////////
+    "Maschera azioni": {
+        "enabled": true // esclude le assegnazioni con attese fuori scala
+    },
+
+    "Architettura RNN": {
+        "hp_d": 64,                 // hp_d - dimensione hidden GRU
+        "hp_l": 4                   // hp_l - numero di layer GRU
+    }
+}

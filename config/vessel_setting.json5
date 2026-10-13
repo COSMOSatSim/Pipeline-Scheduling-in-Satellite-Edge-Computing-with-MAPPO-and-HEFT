@@ -1,0 +1,19 @@
+{
+ "vessels":{
+        "A":{
+            "name": "Vessel A",
+            "lat": 35.573226,
+            "lon": -19.372504
+        },
+        "B":{
+            "name":"Vessel B",
+            "lat":-54.502406,
+            "lon":-11.34087
+        },
+        "ANT_ROME":{
+            "name":"ANT_ROME",
+            "lat":-41.89332,
+            "lon":-167.51707
+        }
+    }
+}

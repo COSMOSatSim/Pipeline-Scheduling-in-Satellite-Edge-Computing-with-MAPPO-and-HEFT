@@ -1,0 +1,24 @@
+// =========================================================================
+// P-8192 - pipeline su immagine 8192px.
+// Un file = una pipeline. Selezione via `pipelines` nello scenario.
+//
+// Struttura:
+//   image_size_px : dimensione immagine (px)
+//   missions      : DAG di missione da fondere, in ordine di esecuzione logica
+//                   (module/class = DAG, suffix = prefisso dei node_id)
+//   bridge_edges  : dipendenze cross-missione (operation successore -> task predecessore)
+// =========================================================================
+{
+    "image_size_px": 8192,
+    "missions": [
+        { "module": "mission.imagery_slicing",       "class": "ImagerySlicingDAG",       "suffix": "IS" },
+        { "module": "mission.cloud_detection",        "class": "CloudDetectionDAG",       "suffix": "CD" },
+        { "module": "mission.geometric_correction",   "class": "GeometricCorrectionDAG",  "suffix": "GC" },
+        { "module": "mission.classification",         "class": "ClassificationDAG",       "suffix": "CF" }
+    ],
+    "bridge_edges": {
+        "CD-FMK": "IS-SEG",
+        "GC-RFM": "CD-GEN",
+        "CF-PRE": "GC-MEG"
+    }
+}

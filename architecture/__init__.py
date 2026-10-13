@@ -1,0 +1,11 @@
+"""I moduli di questa cartella si importano flat tra loro (`import globals`,
+`from utils import ...`): servono la cartella in sys.path, come fa main.py.
+Importare `architecture` attiva lo shim, dopodiché gli import flat funzionano
+da qualunque entry-point (e restituiscono le STESSE istanze usate da main.py).
+"""
+import os
+import sys
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+if _HERE not in sys.path:
+    sys.path.insert(0, _HERE)

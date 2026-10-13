@@ -1,0 +1,54 @@
+// =========================================================================
+// eval_8192_nomask.json5
+// Suite di confronto della variante SENZA maschera: i dieci scenari di test a
+// 8192 px, la baseline, lo specialista di ciascuno scenario e le quattro
+// tecniche di generalizzazione.
+//
+// Letta da CONTROL_PANEL.run = "evaluation" quando EVALUATION.suite punta qui.
+// I risultati finiscono in data/results/evaluation/<output>/<scenario>/.
+//
+// I modelli aggregati non registrano la restrizione con cui sono stati
+// costruiti, percio' vanno eseguiti con SECORS_ACTION_MASK=0 nell'ambiente:
+// la variabile ha la precedenza e garantisce che tutti i candidati corrano
+// nella stessa condizione dei rispettivi ingredienti.
+// =========================================================================
+{
+    //////////////////////////////////////
+    // SCENARIOS - i dieci scenari di test.
+    // Gli scenari gia' valutati vengono saltati: rilanciare esegue solo cio'
+    // che manca. Per rifarne uno, cancellare la sua cartella sotto output.
+    //////////////////////////////////////
+    "scenarios": [
+        "P-8192/SB-8192-TEST/scenario_0",
+        "P-8192/SB-8192-TEST/scenario_1",
+        "P-8192/SB-8192-TEST/scenario_2",
+        "P-8192/SB-8192-TEST/scenario_3",
+        "P-8192/SB-8192-TEST/scenario_4",
+        "P-8192/SB-8192-TEST/scenario_5",
+        "P-8192/SB-8192-TEST/scenario_6",
+        "P-8192/SB-8192-TEST/scenario_7",
+        "P-8192/SB-8192-TEST/scenario_8",
+        "P-8192/SB-8192-TEST/scenario_9"
+    ],
+
+    //////////////////////////////////////
+    // CANDIDATES - chi si confronta.
+    //   {scenario} viene sostituito con lo scenario in esame, cosi' lo
+    //   specialista lo segue senza riscrivere la lista: e' la difesa contro
+    //   l'esecuzione di un modello sullo scenario sbagliato, che i sette
+    //   dispositivi comuni renderebbero altrimenti silenziosa.
+    //////////////////////////////////////
+    "candidates": [
+        { "name": "baseline",       "policy": "baseline" },
+        { "name": "specialist",     "policy": "mappo", "model": "NO-MASK/SB-8192-TEST/{scenario}" },
+        { "name": "fedavg",         "policy": "mappo", "model": "NO-MASK/SB-8192/generalization/fedavg" },
+        { "name": "greedy_soup",    "policy": "mappo", "model": "NO-MASK/SB-8192/generalization/greedy_soup" },
+        { "name": "lambda_scaling", "policy": "mappo", "model": "NO-MASK/SB-8192/generalization/lambda_scaling" },
+        { "name": "random_domain",  "policy": "mappo", "model": "NO-MASK/SB-8192/generalization/random_domain" }
+    ],
+
+    //////////////////////////////////////
+    // OUTPUT - cartella sotto data/results/evaluation/
+    //////////////////////////////////////
+    "output": "EVAL-8192"
+}

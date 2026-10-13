@@ -1,0 +1,72 @@
+// =========================================================================
+// mappo.json5
+// Ricetta CANONICA di MAPPO (marlbenchmark/on-policy, Yu et al. 2022).
+// Sono le scelte di implementazione del framework, indipendenti dall'applicazione.
+// Letto da onpolicy/utils/load_config.py::load_config().
+//
+// Valori = default canonici di on-policy. Cambiarli altera il comportamento del
+// training: modificare con cognizione.
+// =========================================================================
+{
+    //////////////////////////////////////
+    // LOSS / PPO
+    //////////////////////////////////////
+    "num_mini_batch":          1,       // numero di mini-batch per epoca PPO
+    "value_loss_coef":         1.0,     // peso della value loss
+    "max_grad_norm":           10.0,    // clipping della norma del gradiente
+    "use_max_grad_norm":       true,    // abilita il gradient clipping
+    "use_clipped_value_loss":  true,    // value loss clippata
+    "use_value_active_masks":  true,    // maschera dati inutili nella value loss
+    "use_policy_active_masks": true,    // maschera dati inutili nella policy loss
+    "use_gae":                 true,    // Generalized Advantage Estimation
+    "use_proper_time_limits":  false,   // return con time-limit bootstrap
+
+    //////////////////////////////////////
+    // TRICK CANONICI DI MAPPO
+    //////////////////////////////////////
+    "entropy_coef":            0.01,    // coefficiente entropy bonus nella loss actor
+    "use_valuenorm":           true,    // normalizza i return target del critic (running mean/std)
+    "use_popart":              false,   // PopArt (alternativa a valuenorm); mutuamente esclusivo
+    "use_huber_loss":          true,    // Huber loss sul value invece di MSE
+    "huber_delta":             10.0,    // soglia δ della Huber loss
+    "use_linear_lr_decay":     true,    // decadimento lineare di lr verso 0 lungo gli EP episodi
+
+    //////////////////////////////////////
+    // OPTIMIZER (Adam)
+    //////////////////////////////////////
+    "opti_eps":                0.00001, // epsilon di Adam (1e-5)
+    "weight_decay":            0,       // L2 weight decay
+
+    //////////////////////////////////////
+    // RETE / INIZIALIZZAZIONE
+    //////////////////////////////////////
+    "use_feature_normalization": true,  // LayerNorm sugli input (feature norm)
+    "use_orthogonal":            true,  // init ortogonale pesi, 0 sui bias
+    "use_ReLU":                  true,  // ReLU come attivazione (altrimenti Tanh)
+    "layer_N":                   1,     // numero di layer fc nell'MLPBase
+    "gain":                      0.01,  // gain dell'ultimo layer azione
+
+    //////////////////////////////////////
+    // STRUTTURALI (CTDE / parameter sharing / RNN)
+    //////////////////////////////////////
+    "use_centralized_V":          true,  // critic centralizzato (vede lo stato globale)
+    "share_policy":               true,  // parameter sharing: un solo actor/critic
+    "use_obs_instead_of_state":   false, // usa lo stato globale, non la concat delle obs
+    "use_recurrent_policy":       true,  // policy ricorrente (RNN/GRU)
+    "use_naive_recurrent_policy": false, // ricorrenza naive (intera traiettoria) - non usata
+
+    //////////////////////////////////////
+    // SISTEMA
+    //////////////////////////////////////
+    "cuda":                     true,    // usa GPU se disponibile, altrimenti CPU
+    "n_training_threads":       1,       // thread torch per il training
+    "n_eval_rollout_threads":   1,       // env paralleli per la valutazione
+    "n_render_rollout_threads": 1,       // env paralleli per il rendering
+
+    //////////////////////////////////////
+    // EVAL / RENDER 
+    //////////////////////////////////////
+    "use_eval":                false,   // valutazione durante il training
+    "eval_interval":           25,      // ogni quanti episodi valutare
+    "use_render":              false    // rendering durante il training
+}

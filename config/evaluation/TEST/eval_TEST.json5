@@ -1,0 +1,38 @@
+// =========================================================================
+// 4096-generalization.json5
+// Suite di confronto: i dieci scenari di test a 4096 px, lo specialista di
+// ciascuno contro i quattro metodi di generalizzazione e la baseline.
+//
+// Letta da CONTROL_PANEL.run = "evaluation" quando EVALUATION.suite punta qui.
+// I risultati finiscono in data/results/evaluation/<output>/<scenario>/.
+// =========================================================================
+{
+    //////////////////////////////////////
+    // SCENARIOS - su cosa si confrontano.
+    //   uno    -> un solo confronto
+    //   piu'   -> un confronto per scenario, poi la panoramica aggregata
+    // Gli scenari gia' valutati vengono saltati: rilanciare esegue solo cio'
+    // che manca. Per rifarne uno, cancellare la sua cartella sotto output.
+    //////////////////////////////////////
+    "scenarios": [
+        "P-8192/SB-8192-TEST/scenario_6",
+        "P-8192/SB-8192-TEST/scenario_9",
+    ],
+
+    //////////////////////////////////////
+    // CANDIDATES - chi si confronta. Scritti una volta sola.
+    //   policy: "baseline" (resta sull'origine) | "random" | "mappo"
+    //   model : cartella sotto data/models/mappo/ (solo per mappo)
+    //   {scenario} viene sostituito con il nome dello scenario in esame,
+    //             cosi' lo specialista lo segue senza riscrivere la lista.
+    //////////////////////////////////////
+    "candidates": [
+        { "name": "specialist-NEW",         "policy": "mappo", "model": "TEST/SB-8192-TEST/{scenario}" },
+        { "name": "specialist-OLD",         "policy": "mappo", "model": "NO-MASK/SB-8192-TEST/{scenario}" },
+    ],
+
+    //////////////////////////////////////
+    // OUTPUT - cartella sotto data/results/evaluation/
+    //////////////////////////////////////
+    "output": "TEST/EVAL-TEST"
+}

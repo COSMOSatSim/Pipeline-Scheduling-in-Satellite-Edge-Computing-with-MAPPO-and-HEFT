@@ -1,0 +1,32 @@
+/* report.css - stile del comparison.html della valutazione.
+   Iniettato inline da evaluate.py: la pagina resta autocontenuta.
+   (I riepiloghi per candidato portano il proprio CSS: .rep-wrap, da report_html.py.) */
+
+.eval-wrap { font-family: system-ui, sans-serif; margin: 24px 40px; color: #222; }
+.eval-wrap h1 { font-size: 22px; margin: 10px 0 4px; }
+.eval-wrap .sub { color: #666; margin: 0 0 14px; }
+
+/* Tabella di confronto (in cima) e tabella-duello A/B */
+.eval-wrap table.cmp { border-collapse: collapse; font-size: 13px; min-width: 900px; }
+.eval-wrap table.cmp th, .eval-wrap table.cmp td { border: 1px solid #ddd; padding: 4px 10px; }
+.eval-wrap table.cmp th { background: #f4f5f6; text-align: center; font-weight: 600; }
+.eval-wrap table.cmp td.num { text-align: center; font-variant-numeric: tabular-nums; }
+.eval-wrap table.cmp td.name { font-weight: 600; }
+.eval-wrap table.cmp td.win  { color: #1a7f37; font-weight: 600; }
+.eval-wrap table.cmp td.lose { color: #c62828; }
+.eval-duel-wrap { margin-top: 20px; }
+
+/* Selettore A vs B */
+.eval-pick { font-family: system-ui, sans-serif; font-size: 14px; margin: 26px 40px 6px;
+             padding-top: 16px; border-top: 2px solid #ccc; }
+.eval-pick select { font: 14px system-ui, sans-serif; padding: 4px 10px; margin: 0 8px; }
+
+/* Simulation Info dei due candidati, affiancate */
+.eval-infos { display: flex; gap: 70px; flex-wrap: wrap; margin: 0 40px; }
+
+/* Gantt impilati: contenitore flex così il JS li ordina come la selezione (A sopra, B sotto) */
+.eval-gantts { display: flex; flex-direction: column; }
+.eval-cand-info .cand-title { font-family: system-ui, sans-serif; font-size: 15px;
+                              font-weight: 600; margin: 14px 0 0; }
+.eval-cand-info .cand-title a { font-weight: 400; font-size: 12px; margin-left: 10px; }
+.eval-cand-info .rep-wrap { margin: 0; }

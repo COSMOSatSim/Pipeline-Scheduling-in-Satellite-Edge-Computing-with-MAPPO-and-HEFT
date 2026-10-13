@@ -1,0 +1,4 @@
+data/configurations.json filter=lfs diff=lfs merge=lfs -text
+
+# Gli script di lancio girano su Linux: i terminatori CRLF li renderebbero illeggibili
+*.sh text eol=lf

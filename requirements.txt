@@ -1,0 +1,35 @@
+# SECMotionModel - dipendenze Python (testato su Python 3.10)
+#
+# Ambiente locale (CPU):
+#   python -m venv .venv
+#   .venv/Scripts/python -m pip install -r requirements.txt
+#
+# Ambiente cluster (GPU, CUDA): installare PRIMA torch con la build CUDA giusta,
+# poi il resto dei requirements (altrimenti pip installa la build CPU):
+#   python -m venv .venv && source .venv/bin/activate
+#   pip install torch==2.11.0+cu128 --index-url https://download.pytorch.org/whl/cu128
+#   pip install -r requirements.txt
+#
+# Nota: lanciare sempre con PYTHONUTF8=1 (alcuni open() del simulatore non
+# specificano l'encoding). Su Windows: $env:PYTHONUTF8="1".
+
+# --- Core: simulazione + training MAPPO ---
+numpy==2.2.6
+simpy==4.1.1
+json5==0.14.0
+gymnasium==1.3.0
+torch==2.11.0          # su cluster GPU: installare PRIMA la build +cu128 (vedi sopra), poi questo file la salta già soddisfatta
+tensorboardX==2.6.5    # scrive i log di training
+tensorboard==2.20.0    # li visualizza (tensorboard --logdir data/models)
+setproctitle==1.3.7    # richiesto da onpolicy
+matplotlib==3.10.9
+plotly==6.8.0          # grafici HTML interattivi (curve di training + Gantt)
+
+# --- Topologia orbitale + routing del simulatore ---
+skyfield==1.54         # posizioni satelliti dai TLE
+requests==2.34.2       # download TLE (Build_Configurations)
+pulp==3.3.2            # solver ILP (SearchNode "ILP")
+
+# --- Solo per gli script di analisi/plot originali (opzionali, non sul percorso di run) ---
+# pandas
+# seaborn

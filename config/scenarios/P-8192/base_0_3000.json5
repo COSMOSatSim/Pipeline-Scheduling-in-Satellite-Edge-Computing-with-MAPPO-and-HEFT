@@ -1,0 +1,34 @@
+// =========================================================================
+// scenarios/base.json5
+// Uno scenario = device espliciti (id -> type, generator, offline) + pipelines.
+//   - (il tipo si deduce dal prefisso dell'id: "SAT-1" -> SAT)
+//   - generator : true se il device ha la camera e genera task (= agente MAPPO).
+//                 Default: false. (Solo i SAT generano.)
+//   - offline   : finestre offline del device (sua orbita). Default: [].
+//                 SAT/SAS le hanno (in orbita); GND no (è a terra).
+//   - pipelines : id delle pipeline (da config/pipelines/<id>.json5) generate dai generatori.
+// =========================================================================
+{
+    "devices": {
+
+        //////////////////////////////////////
+        // SAT - satelliti comuni (camera -> generatori)
+        //////////////////////////////////////
+        "SAT-1": { "generator": true, "offline": [{ "start": 0, "end": 3000 }] },
+        "SAT-2": { "generator": true, "offline": [{ "start": 0, "end": 3000 }] },
+        "SAT-3": { "generator": true, "offline": [{ "start": 0, "end": 3000 }] },
+        "SAT-4": { "generator": true, "offline": [{ "start": 0, "end": 3000 }] },
+        "SAT-5": { "generator": true, "offline": [{ "start": 0, "end": 3000 }] },
+
+        //////////////////////////////////////
+        // SAS - satellite server (compute, in orbita)
+        //////////////////////////////////////
+        "SAS-1": { "offline": [{ "start": 0, "end": 3000 }] },
+
+        //////////////////////////////////////
+        // GND - ground server (a terra, nessun offline)
+        //////////////////////////////////////
+        "GND-1": {}
+    },
+    "pipelines": ["P-8192"]
+}

@@ -1,0 +1,34 @@
+// =========================================================================
+// scenario_2 - generato da ScenarioBuilder (seed 74).
+// Mappa device -> satellite reale osservato (offline = finestre buffer, in ms):
+//   SAT-1: STARLINK-36230
+//   SAT-2: STARLINK-4427
+//   SAT-3: STARLINK-32559
+//   SAT-4: STARLINK-4366
+//   SAT-5: STARLINK-11267 [DTC]
+//   SAS-1: STARLINK-5704
+// =========================================================================
+{
+    "devices": {
+
+        //////////////////////////////////////
+        // SAT - satelliti comuni
+        //////////////////////////////////////
+        "SAT-1": { "generator": true, "offline": [{ "start": 0, "end": 72682 }] },
+        "SAT-2": { "generator": true, "offline": [{ "start": 0, "end": 16531 }] },
+        "SAT-3": { "generator": true, "offline": [{ "start": 0, "end": 92678 }] },
+        "SAT-4": { "generator": false, "offline": [{ "start": 126210, "end": 180000 }] },
+        "SAT-5": { "generator": false, "offline": [{ "start": 26344, "end": 66291 }, { "start": 170077, "end": 180000 }] },
+
+        //////////////////////////////////////
+        // SAS - satellite server
+        //////////////////////////////////////
+        "SAS-1": { "generator": false, "offline": [{ "start": 0, "end": 4377 }, { "start": 153943, "end": 180000 }] },
+
+        //////////////////////////////////////
+        // GND - ground server
+        //////////////////////////////////////
+        "GND-1": {}
+    },
+    "pipelines": ["P-4096"]
+}

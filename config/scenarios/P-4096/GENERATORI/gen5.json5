@@ -1,0 +1,66 @@
+{
+    "devices": {
+        "SAT-1": {
+            "generator": true,
+            "offline": [
+                {
+                    "start": 11800,
+                    "end": 80538
+                },
+                {
+                    "start": 176396,
+                    "end": 180000
+                }
+            ]
+        },
+        "SAT-2": {
+            "generator": true,
+            "offline": [
+                {
+                    "start": 0,
+                    "end": 11283
+                }
+            ]
+        },
+        "SAT-3": {
+            "generator": true,
+            "offline": [
+                {
+                    "start": 119125,
+                    "end": 170291
+                }
+            ]
+        },
+        "SAT-4": {
+            "generator": true,
+            "offline": [
+                {
+                    "start": 0,
+                    "end": 54840
+                }
+            ]
+        },
+        "SAT-5": {
+            "generator": true,
+            "offline": [
+                {
+                    "start": 105479,
+                    "end": 155160
+                }
+            ]
+        },
+        "SAS-1": {
+            "generator": false,
+            "offline": [
+                {
+                    "start": 147892,
+                    "end": 180000
+                }
+            ]
+        },
+        "GND-1": {}
+    },
+    "pipelines": [
+        "P-4096"
+    ]
+}

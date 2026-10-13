@@ -1,0 +1,257 @@
+{
+  simulation_duration: 180,
+  enable_queue_monitoring: true,
+  cpu_capacity_queue: 5,
+  net_capacity_queue: 5,
+  save_generated_tasks_dataset: true,
+  adding_time: 30,
+  seed: 9973,
+  access_point: 5,
+  arrival_time_exponential: 0.5,
+  deadline: 10,
+  initial_energy: 100000,
+  C_sen: {
+    min: 10000000.0,
+    max: 10000000000.0
+  },
+  energy_coefficient: 5e-26,
+  weight_energy: 0.7,
+  weight_response: 0.3,
+  Ptrasm: 1.0,
+  Bandwidth_to_GU_Bps: 35000000,
+  CPU_timeout: {
+    gen: {
+      mean: 0.05,
+      min: 0.01,
+      max: 0.1
+    },
+    cpui: {
+      mean: 0.5,
+      min: 0.1,
+      max: 1.0
+    },
+    "default": {
+      mean: 0.5,
+      min: 0.1,
+      max: 1.0
+    }
+  },
+  request_distribution: {
+    distribution: "OrbitAware"
+  },
+  DTS: true,
+  AP_selection: "optimal",
+  SearchNode: "MAPPO",       // politiche: "ERT" | "ILP" | "MAPPO" (modello a pipeline)
+  SEN_selection: "maxSunset",
+  required_ram: {
+    min: 50,
+    max: 500
+  },
+  required_disk: {
+    min: 50,
+    max: 1000
+  },
+  Volume_size: {
+    min: 500,
+    max: 1000
+  },
+  available_bandwidth: {
+    min: 2150,
+    max: 3125
+  },
+  generate_tasks: {
+    distribution: "exponential"
+  },
+  csv_name: {
+    name: "C:\\Users\\danil\\PycharmProjects\\SECMotionModel\\result\\OrbitAware_sim_SystemAP5\\deadline_10\\Energy_budget_100000\\IMG_RES_bg_0.4_bcpui_0.35_bcpudi_0.25_am_0.3ah_0.5_avh_0.2_gh_0.7_gvh_0.3\\Routing_bidirectional_True\\seed_9973\\r_algo_GREEDY\\results_exponential_REQ-OrbitAware_AT_0.5_CPU_0.05.csv",
+  },
+  simulation_location: "Roma",
+  locations: {
+    Roma: {
+      lat: 41.8967,
+      lon: 12.4822,
+      alt: 0
+    },
+    "Polo Nord": {
+      lat: 90.0,
+      lon: 135.0,
+      alt: 0
+    }
+  },
+  LEO_orbit: 300,
+  Phi_max: 40,
+  Phi_buffer: 15,
+  Laser_Communication_Range: 659,
+  Build_Configurations: false,
+  redistribuite_OGM: false,
+  Load_Configuration: true,
+  Interval_between_Configurations_in_seconds: 2,
+  Number_of_Configurations: 45,
+  Interval_future_event_prediction: 15,
+  Interval_past_event_prediction: 10,
+  OGMs_redistribution: 1,
+  sphere_altitude_km: 500000.0,
+  AP_routing_bidirectional: true,
+  Routing_Interval: 0.5,
+  corridor_angle: 10.0,
+  Routing_algorithm: {
+    BATMAN: false,
+    GREEDY: true,
+    DSR: false
+  },
+  ilp_weights: {
+    w_e: 0.3,
+    w_R: 0.7
+  },
+  ilp_alpha: {
+    alpha_cpu: 1.0,
+    alpha_net_J_per_MB: 0.000465
+  },
+  ilp_objective: "weighted",
+  lexi_primary: "energy",
+  lexi_tol: 0.1,
+  fallback_retry: {
+    enabled: true,
+    max_attempts: 3,
+    deadline_slack: 0.1
+  },
+
+  //////////////////////////////////////////////////////////////////////
+  // SECORS - usato solo con SearchNode "MAPPO".
+  //
+  // `run` sceglie che cosa esegue main.py: un valore, non una combinazione.
+  // Le sezioni che non gli corrispondono vengono ignorate.
+  //
+  //   "simulation"      una simulazione singola      -> SIMULATION
+  //   "evaluation"      confronto fra candidati      -> EVALUATION
+  //   "training"        addestra uno specialista     -> TRAINING
+  //   "generalization"  aggrega o addestra sul pool  -> GENERALIZATION
+  //   "scenarios"       genera scenari dalle orbite  -> SCENARIO_BUILDER
+  //////////////////////////////////////////////////////////////////////
+  CONTROL_PANEL: {
+    run: "simulation",  // "simulation" | "evaluation" | "training" | "generalization" | "scenarios"
+  },
+
+  ///////////////////////////////////////////////////////////////////////
+  // SIMULATION - una simulazione sola, con la policy indicata.
+  //   I risultati finiscono in data/results/ secondo la configurazione runtime.
+  //////////////////////////////////////////////////////////////////////
+  SIMULATION: {
+
+    SCENARIO: {
+      scenario: "P-8192/SB-8192/scenario_0",  // scenario della simulazione (config/scenarios/<id>.json5)
+    },
+
+    SCHEDULER: {
+      policy_scheduler: {
+        selected: "baseline",          // "baseline" (resta sull'origine) | "random" | "mappo" (actor addestrato)
+        random: { seed: 42 },
+        mappo: { model_folder: "MASK/SB-8192-MASK/scenario_0" }
+      }
+    },
+
+    MONITOR: {                        // stampe del run pipeline (simulation_utility/monitor.py)
+      show_event_table:      true,    // tabella eventi TASK/TRAN START-END
+      show_mission_column:   true,    // colonna MISSION (id pipeline) nella tabella
+      show_start_message:    true,    // banner inizio pipeline
+      show_end_message:      true,    // banner fine pipeline (con makespan)
+      show_generated_queues: false,   // code generate (FASE 1)
+      show_assigned_queues:  false,   // code assegnate dopo la policy (FASE 2)
+      table_at_end:          false,   // tabella intera a fine run (false = live)
+    },
+
+    PRINT: {                            // stampe pre/post simulazione
+      print_simulation_info:    true,   // info di configurazione prima del run
+      print_pipeline_summaries: false,  // dettaglio task per pipeline dopo i riepiloghi
+    },
+
+    SAVE: {                    // output del run pipeline (nella cartella risultati del run)
+      save_results: true,      // results_tasks.csv + results_summary.csv (tempi in ms)
+      save_gantt: true,        // gantt.html interattivo (Plotly, da results_tasks.csv)
+    },
+  },
+
+  //////////////////////////////////////////////////////////////////////
+  // EVALUATION - confronto fra candidati su uno o piu' scenari.
+  //   Chi si confronta, su cosa e dove finisce sta nella suite, un file sotto
+  //   config/evaluation/: cambiare confronto e' cambiare un nome. Con una lista
+  //   di nomi le suite vengono eseguite in sequenza, ognuna con la sua cartella.
+  //   Con un solo scenario produce un confronto; con piu' scenari produce un
+  //   confronto per ciascuno e poi la panoramica aggregata.
+  //   Gli scenari gia' valutati vengono saltati: rilanciare costa solo il
+  //   lavoro che manca.
+  //////////////////////////////////////////////////////////////////////
+  EVALUATION: {
+    suite: "eval_Mask_vs_NoMask",   // file config/evaluation/<suite>.json5
+    // oppure piu' esperimenti in fila:
+    // suite: ["4096-generalization", "8192-generalization"],
+  },
+
+  //////////////////////////////////////////////////////////////////////
+  // SCENARIO_BUILDER - generazione scenari dalle dinamiche orbitali reali.
+  //   Osserva observation_seconds secondi dal GU, ricava le finestre
+  //   online/offline (dome/buffer) in data/online_offline.csv (RIUSATA se
+  //   presente: cancellala per riosservare) e genera gli scenari.
+  //////////////////////////////////////////////////////////////////////
+  SCENARIO_BUILDER: {
+    observation_seconds: 180,        // finestra di osservazione ON/OFF
+    n_sat:        5,                 // satelliti edge (dalla tabella osservata)
+    n_sas:        1,                 // satelliti server
+    n_gnd:        1,                 // ground server (a terra, senza offline)
+    n_generator:  3,                 // quanti SAT generano task (<= n_sat)
+    pipeline:     "P-8192",          // pipeline da usare (config/pipelines/)
+    seed:         72,                // seed base (scenario i usa seed+i)
+    n_scenarios:  10,                // quanti generarne -> scenario_0 ... scenario_{n-1}
+    output_folder: "SB-OUTPUT",  // cartella sotto config/scenarios/
+  },
+
+  //////////////////////////////////////////////////////////////////////
+  // TRAINING - addestramento MAPPO (MDP astratto, no topologia).
+  //   Iperparametri paper -> config/training/env/secors.json5
+  //   Ricetta MAPPO       -> config/training/algorithm/mappo.json5
+  //   Auto-resume dedotto da data/models/<algorithm>/<folder>.
+  //////////////////////////////////////////////////////////////////////
+  TRAINING: {
+    scenario:  "P-8192/SB-8192/scenario_0",   // scenario su cui addestrare (config/scenarios/)
+    env:       "secors",                      // environment da addestrare (registry)
+    algorithm: "mappo",                       // algoritmo: sottocartella di data/models/
+    folder:    "SB-8192/scenario_0",     // cartella della run (allineata allo scenario)
+
+    // intervalli di log/checkpoint/plot (in episodi)
+    print_every:              1,
+    checkpoint_every:         1,
+    plot_every:               10,
+    print_distribution_every: 1,
+  },
+
+  //////////////////////////////////////////////////////////////////////
+  // GENERALIZATION - un modello solo per piu' scenari.
+  //
+  //   fedavg         -> media dei pesi degli n_models specialisti (non regolata).
+  //
+  //   greedy_soup    -> media selettiva: aggiunge un modello solo se il costo
+  //                     di validazione (scenari indicati) migliora.
+  //
+  //   lambda_scaling -> interpola migliore->media: θ(λ)=θ_best+λ(θ_avg−θ_best),
+  //                     λ fisso o "auto" (griglia, scelto validando).
+  //
+  //   random_domain  -> È un addestramento: campiona a ogni episodio uno degli
+  //                     n_scenarios del pool.
+  //
+  // I metodi di aggregazione partono SUBITO sui modelli per-scenario gia'
+  // presenti (errore se ne mancano).
+  // Output: data/models/mappo/<models_folder>/<output_folder>/<method>/models/actor.pt
+  //////////////////////////////////////////////////////////////////////
+  GENERALIZATION: {
+    method:        "lambda_scaling",            // "fedavg" | "greedy_soup" | "lambda_scaling" | "random_domain"
+    models_folder: "NO-MASK/SB-8192",      // sotto data/models/mappo/ (radice dell'output)
+    output_folder: "generalization",    // sotto <models_folder>/
+
+    Settings: {                         // parametri per metodo (solo quello di `method` viene letto)
+      fedavg:         { n_models: 10 },
+      greedy_soup:    { n_models: 10, scenarios_folder: "P-8192/SB-8192", n_scenarios: 10 },
+      lambda_scaling: { n_models: 10, scenarios_folder: "P-8192/SB-8192", n_scenarios: 10, lambda: "auto" },
+      random_domain:  { scenarios_folder: "P-8192/SB-8192", n_scenarios: 10 }
+    }
+  }
+}

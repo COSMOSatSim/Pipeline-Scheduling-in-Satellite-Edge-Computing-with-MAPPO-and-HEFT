@@ -1,0 +1,52 @@
+// =========================================================================
+// eval_8192_mask.json5
+// Suite di confronto della variante CON maschera: gli stessi dieci scenari di
+// test e gli stessi sei candidati di eval_8192_nomask, con i modelli
+// addestrati sotto restrizione delle azioni.
+//
+// Letta da CONTROL_PANEL.run = "evaluation" quando EVALUATION.suite punta qui.
+//
+// Va eseguita con SECORS_ACTION_MASK=1 nell'ambiente. I modelli aggregati non
+// registrano la restrizione con cui sono stati costruiti, e senza la variabile
+// verrebbero valutati senza maschera: una politica mascherata eseguita senza
+// restrizione produce costi di tre ordini di grandezza superiori, quindi il
+// confronto risulterebbe privo di senso.
+//
+// La baseline compare qui come in eval_8192_nomask e non dipende dalla
+// restrizione: fa da riferimento comune fra le due suite.
+// =========================================================================
+{
+    //////////////////////////////////////
+    // SCENARIOS - i dieci scenari di test, gli stessi dell'altra suite.
+    //////////////////////////////////////
+    "scenarios": [
+        "P-8192/SB-8192-TEST/scenario_0",
+        "P-8192/SB-8192-TEST/scenario_1",
+        "P-8192/SB-8192-TEST/scenario_2",
+        "P-8192/SB-8192-TEST/scenario_3",
+        "P-8192/SB-8192-TEST/scenario_4",
+        "P-8192/SB-8192-TEST/scenario_5",
+        "P-8192/SB-8192-TEST/scenario_6",
+        "P-8192/SB-8192-TEST/scenario_7",
+        "P-8192/SB-8192-TEST/scenario_8",
+        "P-8192/SB-8192-TEST/scenario_9"
+    ],
+
+    //////////////////////////////////////
+    // CANDIDATES - gli stessi nomi dell'altra suite, cosi' le due tabelle si
+    // accostano riga per riga nel confronto conclusivo.
+    //////////////////////////////////////
+    "candidates": [
+        { "name": "baseline",       "policy": "baseline" },
+        { "name": "specialist",     "policy": "mappo", "model": "MASK/SB-8192-TEST-MASK/{scenario}" },
+        { "name": "fedavg",         "policy": "mappo", "model": "MASK/SB-8192-MASK/generalization/fedavg" },
+        { "name": "greedy_soup",    "policy": "mappo", "model": "MASK/SB-8192-MASK/generalization/greedy_soup" },
+        { "name": "lambda_scaling", "policy": "mappo", "model": "MASK/SB-8192-MASK/generalization/lambda_scaling" },
+        { "name": "random_domain",  "policy": "mappo", "model": "MASK/SB-8192-MASK/generalization/random_domain" }
+    ],
+
+    //////////////////////////////////////
+    // OUTPUT - cartella sotto data/results/evaluation/
+    //////////////////////////////////////
+    "output": "EVAL-8192-MASK"
+}
